@@ -1,0 +1,736 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>室外导航模块进展汇报｜6页PPT预览</title>
+  <style>
+    :root {
+      --paper: #f7f5ef;
+      --stage: #ebe8df;
+      --ink: #263e52;
+      --blue: #38546d;
+      --blue-2: #6f879d;
+      --blue-pale: #dce5eb;
+      --gold: #a88b4a;
+      --gold-2: #d6c69a;
+      --gold-pale: #eee8d8;
+      --line: #d9d4c7;
+    }
+
+    * { box-sizing: border-box; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      margin: 0;
+      background: var(--stage);
+      color: var(--ink);
+      font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", sans-serif;
+      font-size: 24px;
+      line-height: 1.45;
+    }
+
+    main {
+      display: grid;
+      gap: 34px;
+      justify-items: center;
+      padding: 34px 20px 70px;
+    }
+
+    .slide-stage {
+      position: relative;
+      width: min(1280px, calc(100vw - 40px));
+      aspect-ratio: 16 / 9;
+      overflow: hidden;
+    }
+
+    .slide {
+      position: relative;
+      width: 1280px;
+      height: 720px;
+      overflow: hidden;
+      background: var(--paper);
+      border: 1px solid var(--line);
+      padding: 42px 56px 38px;
+      transform-origin: left top;
+      scroll-snap-align: start;
+    }
+
+    .slide::after {
+      content: attr(data-page);
+      position: absolute;
+      right: 38px;
+      bottom: 24px;
+      color: var(--blue-2);
+      font-size: 19px;
+      letter-spacing: .08em;
+    }
+
+    .eyebrow {
+      margin: 0 0 4px;
+      color: var(--gold);
+      font-size: 30px;
+      font-weight: 700;
+      letter-spacing: .12em;
+    }
+
+    h1, h2, h3, p { margin-top: 0; }
+    h1 { margin-bottom: 18px; font-size: 60px; line-height: 1.18; letter-spacing: .02em; }
+    h2 { margin-bottom: 18px; font-size: 48px; line-height: 1.16; }
+    h3 { margin-bottom: 10px; font-size: 28px; line-height: 1.22; }
+    p { margin-bottom: 12px; font-size: 26px; }
+
+    .title-row {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      gap: 30px;
+      border-bottom: 2px solid var(--blue-pale);
+      padding-bottom: 13px;
+    }
+
+    .title-row h2 { margin: 0; }
+
+    .takeaway {
+      color: var(--blue-2);
+      font-size: 24px;
+      text-align: right;
+    }
+
+    .title-symbol,
+    .mini-symbol {
+      display: inline-grid;
+      place-items: center;
+      flex: 0 0 auto;
+      border: 2px solid var(--gold);
+      color: var(--gold);
+      font-weight: 800;
+      line-height: 1;
+    }
+
+    .title-symbol {
+      width: 38px;
+      height: 38px;
+      margin-right: 10px;
+      font-size: 24px;
+      vertical-align: 5px;
+    }
+
+    .mini-symbol {
+      width: 30px;
+      height: 30px;
+      margin-right: 9px;
+      font-size: 18px;
+      vertical-align: 3px;
+    }
+
+    .cover {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      align-items: center;
+      gap: 38px;
+    }
+
+    .cover > div:first-child { padding-left: 48px; }
+
+    .cover::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 12px;
+      height: 100%;
+      background: var(--gold);
+    }
+
+    .cover .kicker {
+      margin-bottom: 22px;
+      color: var(--gold);
+      font-size: 24px;
+      font-weight: 700;
+      letter-spacing: .15em;
+    }
+
+    .cover .subtitle {
+      color: var(--blue-2);
+      font-size: 30px;
+    }
+
+    .cover .meta {
+      margin-top: 50px;
+      color: var(--blue);
+      font-size: 24px;
+      letter-spacing: .05em;
+    }
+
+    .route-map {
+      position: relative;
+      height: 350px;
+      border: 2px solid var(--blue-pale);
+    }
+
+    .route-line {
+      position: absolute;
+      left: 12%;
+      right: 12%;
+      top: 50%;
+      height: 3px;
+      background: var(--gold);
+    }
+
+    .route-node {
+      position: absolute;
+      top: 50%;
+      width: 126px;
+      transform: translate(-50%, -50%);
+      text-align: center;
+      font-size: 23px;
+      font-weight: 700;
+    }
+
+    .route-node::before {
+      content: "";
+      display: block;
+      width: 34px;
+      height: 34px;
+      margin: 0 auto 12px;
+      border: 5px solid var(--paper);
+      outline: 3px solid var(--blue);
+      border-radius: 50%;
+      background: var(--blue);
+    }
+
+    .route-node:nth-child(2) { left: 16%; }
+    .route-node:nth-child(3) { left: 50%; }
+    .route-node:nth-child(4) { left: 84%; }
+    .route-node:nth-child(4)::before { outline-color: var(--gold); background: var(--gold); }
+
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 1.5fr .72fr;
+      gap: 28px;
+      height: 470px;
+      margin-top: 18px;
+      align-items: stretch;
+    }
+
+    .figure-frame {
+      overflow: hidden;
+      border: 1px solid var(--line);
+      background: var(--paper);
+    }
+
+    .figure-frame img {
+      display: block;
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+    }
+
+    .figure-frame.crop img {
+      object-fit: cover;
+      object-position: center;
+    }
+
+    .figure-frame.crop-tight img {
+      width: 116%;
+      height: 116%;
+      margin: -4% -8%;
+      object-fit: cover;
+      object-position: center;
+    }
+
+    .compare {
+      display: grid;
+      grid-template-rows: 1fr 1fr;
+      gap: 14px;
+    }
+
+    .compare-card {
+      border-left: 6px solid var(--blue);
+      background: var(--blue-pale);
+      padding: 18px 20px;
+    }
+
+    .compare-card.limit {
+      border-left-color: var(--gold);
+      background: var(--gold-pale);
+    }
+
+    .compare-card ul {
+      margin: 9px 0 0;
+      padding-left: 22px;
+      font-size: 24px;
+      line-height: 1.52;
+    }
+
+    .gap-board {
+      display: grid;
+      grid-template-columns: 1fr 1.24fr 1fr;
+      align-items: center;
+      gap: 28px;
+      height: 400px;
+      margin-top: 20px;
+    }
+
+    .endpoint {
+      min-height: 250px;
+      display: grid;
+      place-content: center;
+      border: 2px solid var(--blue);
+      padding: 24px;
+      text-align: center;
+    }
+
+    .endpoint.target { border-color: var(--gold); }
+    .endpoint .big { margin-bottom: 14px; font-size: 32px; font-weight: 800; }
+    .endpoint .small { color: var(--blue-2); font-size: 22px; }
+
+    .bridge {
+      position: relative;
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+      padding: 44px 0;
+    }
+
+    .bridge::before, .bridge::after {
+      content: "";
+      position: absolute;
+      left: -28px;
+      right: -28px;
+      height: 3px;
+      background: var(--gold);
+    }
+
+    .bridge::before { top: 24px; }
+    .bridge::after { bottom: 24px; }
+
+    .missing {
+      position: relative;
+      z-index: 1;
+      background: var(--gold-pale);
+      border: 1px solid var(--gold-2);
+      padding: 16px 10px;
+      text-align: center;
+      font-size: 22px;
+      font-weight: 700;
+    }
+
+    .formula {
+      display: flex;
+      justify-content: center;
+      gap: 18px;
+      align-items: center;
+      border-top: 1px solid var(--line);
+      padding-top: 17px;
+      font-size: 24px;
+      font-weight: 700;
+    }
+
+    .formula .key { color: var(--gold); }
+    .formula .not { padding: 4px 14px; background: var(--gold-pale); color: var(--gold); }
+
+    .wide-figure {
+      height: 400px;
+      margin-top: 18px;
+    }
+
+    .caption-strip {
+      display: grid;
+      grid-template-columns: 1fr auto 1fr;
+      align-items: center;
+      gap: 18px;
+      margin-top: 14px;
+      padding: 12px 22px;
+      border-top: 2px solid var(--gold-2);
+      font-size: 22px;
+      font-weight: 700;
+    }
+
+    .caption-strip .arrow { color: var(--gold); font-size: 26px; }
+    .caption-strip span:last-child { text-align: right; }
+
+    .architecture {
+      display: grid;
+      grid-template-columns: 1.6fr .52fr;
+      gap: 24px;
+      margin-top: 18px;
+      height: 455px;
+    }
+
+    .roles {
+      display: grid;
+      align-content: center;
+      gap: 14px;
+    }
+
+    .role {
+      border-top: 4px solid var(--blue);
+      background: var(--blue-pale);
+      padding: 18px;
+    }
+
+    .role:nth-child(2) { border-top-color: var(--gold); background: var(--gold-pale); }
+    .role:nth-child(3) { border-top-color: var(--blue-2); }
+    .role b { display: block; margin-bottom: 7px; font-size: 25px; }
+    .role span { color: var(--blue); font-size: 20px; }
+
+    .progress-layout {
+      display: grid;
+      grid-template-columns: 1.45fr .75fr;
+      gap: 30px;
+      margin-top: 28px;
+    }
+
+    .progress-line {
+      position: relative;
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 8px;
+      padding-top: 8px;
+    }
+
+    .progress-line::before {
+      content: "";
+      position: absolute;
+      left: 6%; right: 6%; top: 29px;
+      height: 3px;
+      background: var(--gold-2);
+    }
+
+    .step {
+      position: relative;
+      z-index: 1;
+      text-align: center;
+      font-size: 21px;
+      font-weight: 700;
+    }
+
+    .step::before {
+      content: "";
+      display: block;
+      width: 34px;
+      height: 34px;
+      margin: 4px auto 12px;
+      border: 3px solid var(--gold);
+      border-radius: 50%;
+      background: var(--paper);
+    }
+
+    .step.done::before {
+      border-color: var(--blue);
+      background: var(--blue);
+      box-shadow: inset 0 0 0 7px var(--paper);
+    }
+
+    .evidence {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 14px;
+      margin-top: 42px;
+    }
+
+    .metric {
+      min-height: 130px;
+      display: grid;
+      place-content: center;
+      border: 1px solid var(--blue-2);
+      text-align: center;
+      padding: 15px;
+    }
+
+    .metric strong { display: block; color: var(--blue); font-size: 30px; }
+    .metric span { font-size: 22px; }
+
+    .next {
+      display: grid;
+      gap: 12px;
+      align-content: start;
+      border-left: 2px solid var(--gold-2);
+      padding-left: 24px;
+    }
+
+    .next h3 { color: var(--gold); }
+    .next-item {
+      display: grid;
+      grid-template-columns: 34px 1fr;
+      gap: 10px;
+      align-items: center;
+      background: var(--gold-pale);
+      padding: 15px;
+      font-size: 21px;
+      font-weight: 700;
+    }
+
+    .next-item i {
+      display: grid;
+      place-items: center;
+      width: 30px; height: 30px;
+      border-radius: 50%;
+      background: var(--gold);
+      color: var(--paper);
+      font-style: normal;
+    }
+
+    .status-note {
+      margin-top: 14px;
+      color: var(--blue-2);
+      font-size: 20px;
+    }
+
+    /* 第2页：扩大主图容器，右侧仅保留紧凑摘要。 */
+    .slide-2 .grid-2 {
+      grid-template-columns: minmax(0, 1fr) 205px;
+      gap: 14px;
+    }
+
+    .slide-2 .figure-frame.crop-tight img {
+      width: 100%;
+      height: 100%;
+      margin: 0;
+      object-fit: cover;
+      object-position: center;
+    }
+
+    .slide-2 .compare-card {
+      overflow: hidden;
+      padding: 18px 12px;
+    }
+
+    .slide-2 .compare-card h3 {
+      white-space: nowrap;
+      font-size: 27px;
+    }
+
+    .slide-2 .compare-card ul {
+      padding-left: 21px;
+      font-size: 22px;
+      line-height: 1.58;
+    }
+
+    /* 第3页：标题不变，只提高内容层级。 */
+    .slide-3 .endpoint .big { font-size: 36px; }
+    .slide-3 .endpoint .small { font-size: 28px; line-height: 1.55; }
+    .slide-3 .missing { font-size: 28px; }
+    .slide-3 .formula { font-size: 30px; }
+
+    /* 第5页：架构图占据更大宽度，角色说明同步放大。 */
+    .slide-5 {
+      padding-top: 30px;
+      padding-right: 36px;
+      padding-bottom: 8px;
+      padding-left: 36px;
+    }
+
+    .slide-5::after { bottom: 4px; }
+
+    .slide-5 .architecture {
+      grid-template-columns: minmax(0, 1fr) 220px;
+      gap: 14px;
+      height: 535px;
+      margin-top: 6px;
+    }
+
+    .slide-5 .figure-frame img {
+      width: 100%;
+      height: 100%;
+      margin: 0;
+      object-fit: contain;
+      object-position: center;
+    }
+
+    .slide-5 .roles { gap: 12px; }
+    .slide-5 .role { padding: 16px 13px; }
+    .slide-5 .role b { font-size: 30px; }
+    .slide-5 .role span { font-size: 24px; line-height: 1.38; }
+
+    /* 第6页：让进度、证据和下一步共同占满可用高度。 */
+    .slide-6 .progress-layout {
+      height: 480px;
+      margin-top: 18px;
+      align-items: stretch;
+    }
+
+    .slide-6 .progress-main {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .slide-6 .evidence { margin-top: 0; }
+    .slide-6 .metric { min-height: 165px; }
+    .slide-6 .status-note { margin: 0; }
+
+    .slide-6 .next {
+      grid-template-rows: auto repeat(4, 1fr);
+      align-content: stretch;
+      gap: 14px;
+    }
+
+    @media (max-width: 900px) {
+      main { padding: 16px 8px 40px; gap: 18px; }
+      .slide-stage { width: calc(100vw - 16px); }
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <section class="slide cover" data-page="01 / 06">
+      <div>
+        <p class="kicker">OMNIGUIDE · 周会汇报</p>
+        <h1>室外导航模块<br />进展汇报</h1>
+        <p class="subtitle">从网页原型到安卓实测架构</p>
+        <p class="meta">方案迭代 · 工程实现 · 下一步验证</p>
+      </div>
+      <div class="route-map" aria-label="项目阶段路线">
+        <div class="route-line"></div>
+        <div class="route-node">网页原型</div>
+        <div class="route-node">安卓 APK</div>
+        <div class="route-node">室外实测</div>
+      </div>
+    </section>
+
+    <section class="slide slide-2" data-page="02 / 06">
+      <div class="title-row">
+        <div><p class="eyebrow">1. 数据融合</p><h2><span class="title-symbol">◎</span>最初版</h2></div>
+        <p class="takeaway">已验证“导航信息进入问答”</p>
+      </div>
+      <div class="grid-2">
+        <figure class="figure-frame crop-tight">
+          <img src="ppt-assets/weekly-progress-2026-08-20-v2/slide-02-original-prototype-v2.png" alt="最初网页原型的数据融合流程" />
+        </figure>
+        <div class="compare">
+          <article class="compare-card">
+            <h3><span class="mini-symbol">✓</span>已完成</h3>
+            <ul>
+              <li>路线请求</li>
+              <li>上下文拼接</li>
+              <li>单图问答</li>
+            </ul>
+          </article>
+          <article class="compare-card limit">
+            <h3><span class="mini-symbol">△</span>当时边界</h3>
+            <ul>
+              <li>人工切换</li>
+              <li>无持续定位</li>
+              <li>无实时视频</li>
+            </ul>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide slide-3" data-page="03 / 06">
+      <div class="title-row">
+        <div><p class="eyebrow">2. 问题识别</p><h2><span class="title-symbol">△</span>能力缺口</h2></div>
+        <p class="takeaway">“接口可调用”不等于“导航可实测”</p>
+      </div>
+      <div class="gap-board">
+        <div class="endpoint">
+          <div class="big"><span class="mini-symbol">◫</span>网页原型</div>
+          <div class="small">一次请求<br />一次返回</div>
+        </div>
+        <div class="bridge" aria-label="从网页原型到完整室外体验缺少的四项能力">
+          <div class="missing">持续 GPS</div>
+          <div class="missing">导航状态</div>
+          <div class="missing">实时音视频</div>
+          <div class="missing">语音协调</div>
+        </div>
+        <div class="endpoint target">
+          <div class="big"><span class="mini-symbol">◎</span>目标体验</div>
+          <div class="small">边走边导航<br />边看边问答</div>
+        </div>
+      </div>
+      <div class="formula">
+        <span class="key">API Key</span><span>= 调用权限</span><span class="not">≠</span><span>完整产品能力</span>
+      </div>
+    </section>
+
+    <section class="slide" data-page="04 / 06">
+      <div class="title-row">
+        <div><p class="eyebrow">3. 方案迭代</p><h2><span class="title-symbol">↗</span>载体选择</h2></div>
+        <p class="takeaway">测试载体随能力要求逐步收敛</p>
+      </div>
+      <figure class="figure-frame wide-figure crop">
+        <img src="ppt-assets/weekly-progress-2026-08-20-v2/slide-04-platform-evolution-v2.png" alt="从电脑网页到手机网页再到安卓 APK 的载体演进" />
+      </figure>
+      <div class="caption-strip">
+        <span><span class="mini-symbol">◫</span>网页：适合接口与界面调试</span><span class="arrow">→</span><span><span class="mini-symbol">◎</span>APK：承担完整室外验收</span>
+      </div>
+    </section>
+
+    <section class="slide slide-5" data-page="05 / 06">
+      <div class="title-row">
+        <div><p class="eyebrow">4. 当前方案</p><h2><span class="title-symbol">◇</span>系统架构</h2></div>
+        <p class="takeaway">高德负责导航事实，千问负责环境理解</p>
+      </div>
+      <div class="architecture">
+        <figure class="figure-frame crop">
+          <img src="ppt-assets/weekly-progress-2026-08-20-v2/slide-05-current-architecture-v2.png" alt="OmniGuide 安卓测试系统当前架构" />
+        </figure>
+        <aside class="roles">
+          <div class="role"><b><span class="mini-symbol">⌖</span>高德</b><span>定位、路线、转向与播报</span></div>
+          <div class="role"><b><span class="mini-symbol">◉</span>千问</b><span>实时视频、语音问答</span></div>
+          <div class="role"><b><span class="mini-symbol">◇</span>OmniGuide</b><span>上下文融合与交互调度</span></div>
+        </aside>
+      </div>
+    </section>
+
+    <section class="slide slide-6" data-page="06 / 06">
+      <div class="title-row">
+        <div><p class="eyebrow">5. 进展与计划</p><h2><span class="title-symbol">✓</span>当前进度</h2></div>
+        <p class="takeaway">工程链路已完成，进入凭证与真机验收阶段</p>
+      </div>
+      <div class="progress-layout">
+        <div class="progress-main">
+          <div class="progress-line" aria-label="当前实施进度">
+            <div class="step done">方案<br />确定</div>
+            <div class="step done">代码<br />完成</div>
+            <div class="step done">自动<br />测试</div>
+            <div class="step done">APK<br />编译</div>
+            <div class="step">真实<br />凭证</div>
+            <div class="step">真机<br />实测</div>
+            <div class="step">室外<br />录屏</div>
+          </div>
+          <div class="evidence">
+            <div class="metric"><strong><span class="mini-symbol">✓</span>43 项</strong><span>服务端全量回归</span></div>
+            <div class="metric"><strong><span class="mini-symbol">✓</span>3 项</strong><span>客户端新增测试</span></div>
+            <div class="metric"><strong><span class="mini-symbol">◆</span>2 类</strong><span>Debug / Release APK</span></div>
+          </div>
+          <p class="status-note">注：43 项包含服务端原有与新增模块的全量回归，不代表全部为本次新增。</p>
+        </div>
+        <aside class="next">
+          <h3>下一步</h3>
+          <div class="next-item"><i>1</i><span>配置高德与千问凭证</span></div>
+          <div class="next-item"><i>2</i><span>安卓室外真机测试</span></div>
+          <div class="next-item"><i>3</i><span>收集 bad cases</span></div>
+          <div class="next-item"><i>4</i><span>优化融合并适配 iOS</span></div>
+        </aside>
+      </div>
+    </section>
+  </main>
+  <script>
+    const BASE_WIDTH = 1280;
+    const slides = [...document.querySelectorAll('.slide')];
+
+    slides.forEach((slide) => {
+      const stage = document.createElement('div');
+      stage.className = 'slide-stage';
+      slide.parentNode.insertBefore(stage, slide);
+      stage.appendChild(slide);
+    });
+
+    function fitSlides() {
+      document.querySelectorAll('.slide-stage').forEach((stage) => {
+        const slide = stage.querySelector('.slide');
+        slide.style.transform = `scale(${stage.clientWidth / BASE_WIDTH})`;
+      });
+    }
+
+    new ResizeObserver(fitSlides).observe(document.querySelector('main'));
+    fitSlides();
+  </script>
+</body>
+</html>
